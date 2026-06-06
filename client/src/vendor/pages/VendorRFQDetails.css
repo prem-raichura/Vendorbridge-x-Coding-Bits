@@ -1,0 +1,252 @@
+.vendor-rfq-details-page {
+  display: grid;
+  gap: 18px;
+  color: #18221f;
+}
+
+.vendor-rfq-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.vendor-rfq-details-header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.9rem, 2.8vw, 2.7rem);
+  line-height: 1.1;
+  color: #15241f;
+}
+
+.vendor-rfq-details-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #64736d;
+  font-size: 0.94rem;
+}
+
+.vendor-rfq-details-breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.vendor-rfq-details-topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.vendor-rfq-details-notification {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid #e2e9e5;
+  background: #fff;
+  position: relative;
+}
+
+.vendor-rfq-details-notification span {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #ef4444;
+  border: 2px solid #fff;
+}
+
+.vendor-rfq-details-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vendor-rfq-details-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #0f8f77;
+  color: #fff;
+  font-weight: 800;
+}
+
+.vendor-rfq-details-user strong,
+.vendor-rfq-details-user span {
+  display: block;
+  line-height: 1.15;
+}
+
+.vendor-rfq-details-user strong {
+  font-size: 0.96rem;
+  color: #15241f;
+}
+
+.vendor-rfq-details-user span {
+  color: #5c6d66;
+  font-size: 0.8rem;
+}
+
+.vendor-rfq-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.vendor-rfq-details-card {
+  background: #fff;
+  border: 1px solid #e3ebe6;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(16, 35, 28, 0.04);
+  padding: 18px;
+  min-width: 0;
+}
+
+.vendor-rfq-details-card h2 {
+  margin: 0 0 16px;
+  font-size: 1.02rem;
+  color: #162520;
+}
+
+.vendor-rfq-details-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.vendor-rfq-details-list div {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.vendor-rfq-details-list dt {
+  color: #6a7873;
+  font-weight: 700;
+}
+
+.vendor-rfq-details-list dd {
+  margin: 0;
+  color: #20302b;
+  font-weight: 600;
+}
+
+.vendor-rfq-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #dff6e6;
+  color: #2f8d4f;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.vendor-rfq-items-table-wrap {
+  overflow-x: auto;
+}
+
+.vendor-rfq-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 360px;
+}
+
+.vendor-rfq-items-table th,
+.vendor-rfq-items-table td {
+  text-align: left;
+  padding: 14px 10px;
+  border-bottom: 1px solid #edf1ee;
+  white-space: nowrap;
+}
+
+.vendor-rfq-items-table th {
+  color: #35443f;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.vendor-rfq-items-table td {
+  color: #23322d;
+  font-size: 0.94rem;
+}
+
+.vendor-rfq-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #dbe4df;
+  border-radius: 10px;
+  color: #20302b;
+  text-decoration: none;
+  background: #fff;
+}
+
+.vendor-rfq-details-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.vendor-rfq-secondary,
+.vendor-rfq-primary {
+  min-height: 46px;
+  border-radius: 12px;
+  padding: 0 18px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.vendor-rfq-secondary {
+  background: #fff;
+  border-color: #dbe4df;
+  color: #243531;
+}
+
+.vendor-rfq-primary {
+  min-width: 220px;
+  background: #0f8f77;
+  color: #fff;
+}
+
+@media (max-width: 1200px) {
+  .vendor-rfq-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .vendor-rfq-details-header {
+    flex-direction: column;
+  }
+
+  .vendor-rfq-details-topbar {
+    margin-left: 0;
+  }
+
+  .vendor-rfq-details-list div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .vendor-rfq-details-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vendor-rfq-primary {
+    min-width: 0;
+  }
+}

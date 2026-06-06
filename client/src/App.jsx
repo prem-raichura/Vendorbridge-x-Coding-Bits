@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './shared/context/AuthContext';
 import LandingPage from './shared/pages/LandingPage';
@@ -19,6 +19,8 @@ const ProcurementLayout = React.lazy(() => import('./procurement/layouts/Procure
 const AdminDashboard = React.lazy(() => import('./admin/pages/AdminDashboard'));
 const VendorDashboard = React.lazy(() => import('./vendor/pages/VendorDashboard'));
 const ProcurementDashboard = React.lazy(() => import('./procurement/pages/ProcurementDashboard'));
+const VendorRFQs = React.lazy(() => import('./vendor/pages/VendorRFQs'));
+const VendorRFQDetails = React.lazy(() => import('./vendor/pages/VendorRFQDetails'));
 
 const Unauthorized = () => <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'sans-serif' }}><h2>403 - Unauthorized</h2><p>You do not have permission to view this page.</p></div>;
 
@@ -46,6 +48,11 @@ function App() {
             {/* Vendor Routes */}
             <Route path="/vendor" element={<VendorLayout />}>
               <Route index element={<VendorDashboard />} />
+              <Route path="rfqs" element={<Navigate to="assigned" replace />} />
+              <Route path="rfqs/assigned" element={<VendorRFQs status="assigned" />} />
+              <Route path="rfqs/active" element={<VendorRFQs status="active" />} />
+              <Route path="rfqs/closed" element={<VendorRFQs status="closed" />} />
+              <Route path="rfqs/:rfqId" element={<VendorRFQDetails />} />
             </Route>
 
             {/* Procurement Routes */}
