@@ -5,8 +5,7 @@ const { protect, authorize } = require('../../../shared/gateway/apiGateway.middl
 
 // Route to add a procurement user. 
 // Uses the protect middleware to ensure the user is logged in,
-// and authorize('ADMIN') to ensure only an admin can create procurement users.
-// (Adjust the authorize roles if another role should be able to create them)
-router.post('/add', protect, authorize('ADMIN'), addProcurementUser);
+// and authorize to ensure only admin or manager can create procurement officers.
+router.post('/add', protect, authorize('admin', 'manager'), addProcurementUser);
 
 module.exports = router;

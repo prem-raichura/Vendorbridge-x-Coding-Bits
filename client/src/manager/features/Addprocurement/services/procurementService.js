@@ -1,20 +1,24 @@
-import axios from 'axios';
+import api from '../../../../shared/api/axiosInstance';
 
-const API_URL = 'http://localhost:8000/api/procurement';
-
+// Create a new procurement officer
 export const addProcurementOfficer = async (officerData) => {
   try {
-    const token = localStorage.getItem('token') || localStorage.getItem('vendorbridge_token');
-    const response = await axios.post(`${API_URL}/add`, officerData, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const response = await api.post('/procurement/add', officerData);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
       throw error.response.data;
     }
     throw error;
+  }
+};
+
+// Get all procurement officers (for the roster list)
+export const getProcurementOfficers = async () => {
+  try {
+    const response = await api.get('/admin/manager/procurement-officers');
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch officers');
   }
 };

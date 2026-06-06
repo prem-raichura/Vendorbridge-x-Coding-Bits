@@ -7,6 +7,7 @@ const addRfqRoutes = require('./procurement/features/rfqmanagemant/addrfq.routes
 const managerRoutes = require('./admin/features/manager/manager.routes');
 const vendorRoutes = require('./admin/features/managevendor/managevendor.routes');
 const vendorQuotationRoutes = require('./vendor/features/quotation/quotation.routes');
+const dashboardRoutes = require('./admin/features/dashboard/dashboard.routes');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/procurement', addProcurementRoutes);
 app.use('/api/procurement/rfq', addRfqRoutes);
 app.use('/api/admin/manager', managerRoutes);
 app.use('/api/admin/vendor', vendorRoutes);
+app.use('/api/admin/dashboard', dashboardRoutes);
 app.use('/api/vendor/quotation', vendorQuotationRoutes);
 
 // Base route for health check

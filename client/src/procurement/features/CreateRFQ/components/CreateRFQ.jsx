@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, UploadCloud, Plus, LayoutDashboard, FileText, Bell, ChevronDown, CheckCircle, MapPin, LogOut, Menu, Package } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { createRfq } from '../services/rfqService';
 
 export const CreateRFQ = () => {
   const navigate = useNavigate();
@@ -59,6 +61,37 @@ export const CreateRFQ = () => {
   };
   const removeVendor = (index) => {
     setVendors(vendors.filter((_, i) => i !== index));
+  };
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (sendToVendors = false) => {
+    if (!formData.title || !formData.deadline) {
+      toast.error('Please provide at least a title and deadline.');
+      return;
+    }
+
+    const validItems = items.filter(i => i.name.trim());
+    setIsSubmitting(true);
+
+    try {
+      await createRfq({
+        rfq_title: formData.title,
+        rfq_category: formData.category,
+        rfq_deadline: formData.deadline,
+        rfq_description: formData.description,
+        items: validItems.length > 0 ? validItems : null,
+        assign_vendors: vendors.length > 0 ? vendors : null,
+        rfq_status: sendToVendors ? 'ACTIVE' : 'DRAFT'
+      });
+
+      toast.success(sendToVendors ? 'RFQ sent to vendors!' : 'RFQ saved as draft!');
+      setTimeout(() => navigate('/procurement'), 1500);
+    } catch (err) {
+      toast.error(err.message || 'Failed to create RFQ');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -350,10 +383,18 @@ export const CreateRFQ = () => {
             {/* BOTTOM SECTION: Buttons & Attachments */}
             <div className="mt-16 pt-10 border-t border-gray-300 grid grid-cols-1 lg:grid-cols-2 gap-16">
               <div className="flex flex-col space-y-4 justify-center">
-                <button className="px-8 py-3 border-2 border-gray-800 rounded-xl font-semibold text-gray-800 hover:bg-gray-50 transition-colors w-fit shadow-sm">
-                  Save & Send to Vendors
+                <button 
+                  onClick={() => handleSubmit(true)}
+                  disabled={isSubmitting}
+                  className="px-8 py-3 border-2 border-gray-800 rounded-xl font-semibold text-gray-800 hover:bg-gray-50 transition-colors w-fit shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Saving...' : 'Save & Send to Vendors'}
                 </button>
-                <button className="px-8 py-3 border-2 border-gray-800 rounded-xl font-semibold text-gray-800 hover:bg-gray-50 transition-colors w-fit shadow-sm">
+                <button 
+                  onClick={() => handleSubmit(false)}
+                  disabled={isSubmitting}
+                  className="px-8 py-3 border-2 border-gray-800 rounded-xl font-semibold text-gray-800 hover:bg-gray-50 transition-colors w-fit shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   Save as Draft
                 </button>
               </div>

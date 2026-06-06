@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { addRfq } = require('./addrfq.controller');
+const { addRfq, getRfqs, getRfqById } = require('./addrfq.controller');
 const { protect, authorize } = require('../../../shared/gateway/apiGateway.middleware');
 
-// Route to add an RFQ.
-// Protected to ensure user is logged in.
-// Authorized to ensure only a 'PROCUREMENT' role can add an RFQ.
-router.post('/add', protect, authorize('PROCUREMENT'), addRfq);
+// All routes require authentication and procurement role
+router.use(protect, authorize('procurement'));
+
+router.get('/', getRfqs);
+router.get('/:rfq_id', getRfqById);
+router.post('/add', addRfq);
 
 module.exports = router;

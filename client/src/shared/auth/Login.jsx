@@ -16,9 +16,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post('/auth/login', { username, password });
-      const { token, role } = response.data;
-      
-      login(token, role);
+      const { token, role, user_id, first_name, last_name, email, username: uname } = response.data;
+
+      const userData = { user_id, first_name, last_name, email, username: uname };
+      login(token, role, userData);
       setError(null);
       toast.success('Login successful');
 
@@ -81,7 +82,7 @@ const Login = () => {
             </label>
 
             <button type="submit" className="login-button">Login</button>
-            <Link className="login-link-button" to="/register-vendor">
+            <Link className="login-link-button" to="/signup">
               Register as Vendor
             </Link>
           </form>

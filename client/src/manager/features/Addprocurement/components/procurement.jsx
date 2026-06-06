@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, 
   Users, 
@@ -19,23 +19,41 @@ import {
   Menu,
   X,
   Building2,
-  TrendingUp
+  TrendingUp,
+  Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-const mockOfficers = [
-  { id: 1, name: 'Rahul Sharma', email: 'rahul.sharma@vb.com', dept: 'IT Procurement', rfqs: 32, login: '12 May 2026, 10:30 AM', status: 'Active' },
-  { id: 2, name: 'Priya Mehta', email: 'priya.mehta@vb.com', dept: 'Operations', rfqs: 28, login: '12 May 2026, 09:15 AM', status: 'Active' },
-  { id: 3, name: 'Amit Kumar', email: 'amit.kumar@vb.com', dept: 'Admin', rfqs: 18, login: '11 May 2026, 04:45 PM', status: 'Active' },
-  { id: 4, name: 'Sneha Verma', email: 'sneha.verma@vb.com', dept: 'Purchase', rfqs: 22, login: '11 May 2026, 11:20 AM', status: 'Active' },
-  { id: 5, name: 'Vikram Singh', email: 'vikram.singh@vb.com', dept: 'IT Procurement', rfqs: 9, login: '10 May 2026, 03:05 PM', status: 'Inactive' },
-  { id: 6, name: 'Neha Joshi', email: 'neha.joshi@vb.com', dept: 'Operations', rfqs: 6, login: '09 May 2026, 01:20 PM', status: 'Inactive' },
-];
+import { useAuth } from '../../../../shared/hooks/useAuth';
+import { getProcurementOfficers } from '../services/procurementService';
+import toast from 'react-hot-toast';
 
 export const Addprocurement = () => {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [officers, setOfficers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const fetchOfficers = async () => {
+      try {
+        const data = await getProcurementOfficers();
+        setOfficers(data.data || []);
+      } catch (err) {
+        toast.error(err.message || 'Failed to load officers');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchOfficers();
+  }, []);
+
+  const filteredOfficers = officers.filter(o => 
+    `${o.first_name} ${o.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    o.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const toggleSidebar = () => {
     if (window.innerWidth < 1024) {
@@ -130,10 +148,10 @@ export const Addprocurement = () => {
         </div>
         
         <div className="p-4 border-t border-gray-100 whitespace-nowrap overflow-hidden">
-          <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-600 transition-colors text-sm font-semibold">
+          <button onClick={logout} className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-600 transition-colors text-sm font-semibold w-full">
             <LogOut size={20} className="flex-shrink-0 ml-0.5" />
             <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Logout</span>
-          </a>
+          </button>
         </div>
       </aside>
 
@@ -149,7 +167,9 @@ export const Addprocurement = () => {
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
                 type="text" 
-                placeholder="Search..." 
+                placeholder="Search officers..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-11 pr-4 py-2 text-sm font-medium border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue/20 focus:border-primary-blue transition-all bg-white"
               />
             </div>
@@ -162,11 +182,13 @@ export const Addprocurement = () => {
             </div>
             <div className="flex items-center space-x-3 cursor-pointer group border-l border-gray-200 pl-5">
               <div className="hidden md:flex flex-col text-right">
-                <span className="text-sm font-bold text-gray-800 leading-none">Manager User</span>
+                <span className="text-sm font-bold text-gray-800 leading-none">
+                  {user ? `${user.first_name} ${user.last_name}` : 'Manager'}
+                </span>
                 <span className="text-[11px] font-semibold text-primary-blue mt-1">VendorBridge</span>
               </div>
               <div className="w-10 h-10 rounded-full bg-primary-blue text-white flex items-center justify-center font-bold text-sm shadow-md">
-                M
+                {user ? user.first_name[0].toUpperCase() : 'M'}
               </div>
             </div>
           </div>
@@ -274,36 +296,36 @@ export const Addprocurement = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50 text-gray-700 font-medium">
-                  {mockOfficers.map((officer) => (
-                    <tr key={officer.id} className="hover:bg-gray-50 transition-colors group">
-                      <td className="px-6 py-4 text-gray-400 font-bold">{officer.id}</td>
-                      <td className="px-6 py-4 font-bold text-gray-900">{officer.name}</td>
-                      <td className="px-6 py-4 text-gray-500">{officer.email}</td>
-                      <td className="px-6 py-4">
-                        <span className="bg-blue-50 text-primary-blue px-2.5 py-1 rounded-md text-xs font-semibold border border-blue-100">{officer.dept}</span>
-                      </td>
-                      <td className="px-6 py-4 text-center font-bold">{officer.rfqs}</td>
-                      <td className="px-6 py-4 text-gray-400 text-xs">{officer.login}</td>
-                      <td className="px-6 py-4">
-                        {officer.status === 'Active' ? (
+                  {isLoading ? (
+                    <tr><td colSpan={8} className="px-6 py-10 text-center text-gray-400"><Loader2 size={24} className="animate-spin mx-auto" /></td></tr>
+                  ) : filteredOfficers.length === 0 ? (
+                    <tr><td colSpan={8} className="px-6 py-10 text-center text-gray-400 text-sm">No procurement officers found.</td></tr>
+                  ) : (
+                    filteredOfficers.map((officer, idx) => (
+                      <tr key={officer.user_id} className="hover:bg-gray-50 transition-colors group">
+                        <td className="px-6 py-4 text-gray-400 font-bold">{idx + 1}</td>
+                        <td className="px-6 py-4 font-bold text-gray-900">{officer.first_name} {officer.last_name}</td>
+                        <td className="px-6 py-4 text-gray-500">{officer.email}</td>
+                        <td className="px-6 py-4">
+                          <span className="bg-blue-50 text-primary-blue px-2.5 py-1 rounded-md text-xs font-semibold border border-blue-100">Procurement</span>
+                        </td>
+                        <td className="px-6 py-4 text-center font-bold">—</td>
+                        <td className="px-6 py-4 text-gray-400 text-xs">
+                          {officer.last_login ? new Date(officer.last_login).toLocaleString() : 'Never'}
+                        </td>
+                        <td className="px-6 py-4">
                           <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-50 text-primary-green border border-green-100">
                             Active
                           </span>
-                        ) : (
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-red-50 text-red-500 border border-red-100">
-                            Inactive
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button className="text-gray-400 hover:text-primary-blue p-1.5 rounded-lg hover:bg-blue-50 transition-colors"><Edit2 size={16} /></button>
-                          <button className="text-gray-400 hover:text-primary-blue p-1.5 rounded-lg hover:bg-blue-50 transition-colors"><Eye size={16} /></button>
-                          <button className="text-gray-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 transition-colors"><MoreVertical size={16} /></button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex items-center justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button className="text-gray-400 hover:text-primary-blue p-1.5 rounded-lg hover:bg-blue-50 transition-colors"><Eye size={16} /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -311,7 +333,7 @@ export const Addprocurement = () => {
             {/* Pagination */}
             <div className="p-5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 gap-4 bg-gray-50/50">
               <div className="font-medium text-xs text-gray-400 uppercase tracking-wider">
-                Showing <span className="text-gray-700 font-bold">1-6</span> of <span className="text-gray-700 font-bold">25</span> entries
+                Showing <span className="text-gray-700 font-bold">{filteredOfficers.length}</span> of <span className="text-gray-700 font-bold">{officers.length}</span> entries
               </div>
               <div className="flex items-center space-x-1.5">
                 <button className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-gray-400 hover:text-gray-600">&lt;</button>

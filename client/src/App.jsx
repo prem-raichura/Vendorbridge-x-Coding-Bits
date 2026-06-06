@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './shared/context/AuthContext';
+import { useAuth } from './shared/hooks/useAuth';
 import LandingPage from './shared/pages/LandingPage';
 import Login from './shared/auth/Login';
 import Loader from './shared/components/Loader';
@@ -24,6 +25,14 @@ const VendorRFQDetails = React.lazy(() => import('./vendor/pages/VendorRFQDetail
 
 const Unauthorized = () => <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'sans-serif' }}><h2>403 - Unauthorized</h2><p>You do not have permission to view this page.</p></div>;
 
+// Auth guard for manager routes
+const ManagerGuard = ({ children }) => {
+  const { isAuthenticated, role } = useAuth();
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (role.toLowerCase() !== 'manager') return <Navigate to="/unauthorized" replace />;
+  return children;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -36,9 +45,13 @@ function App() {
             <Route path="/signup" element={<Vendorsignup />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
-            {/* Manager Routes */}
-            <Route path="/manager/officers" element={<Addprocurement />} />
-            <Route path="/manager/officers/create" element={<CreateProcurementOfficer />} />
+            {/* Manager Routes — protected by ManagerGuard */}
+            <Route path="/manager/officers" element={
+              <ManagerGuard><Addprocurement /></ManagerGuard>
+            } />
+            <Route path="/manager/officers/create" element={
+              <ManagerGuard><CreateProcurementOfficer /></ManagerGuard>
+            } />
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>

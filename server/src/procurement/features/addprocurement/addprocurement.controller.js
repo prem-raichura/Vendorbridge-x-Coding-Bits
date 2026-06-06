@@ -42,7 +42,7 @@ const addProcurementUser = async (req, res) => {
         phone_no,
         country,
         bio,
-        role: 'PROCUREMENT' // Setting the role automatically
+        role: 'procurement' // Setting the role automatically (lowercase to match DB standard)
       }
     });
 

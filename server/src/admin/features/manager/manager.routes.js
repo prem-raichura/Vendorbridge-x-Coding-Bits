@@ -1,7 +1,9 @@
 const express = require('express');
 const {
   createManager,
-  deleteManager
+  deleteManager,
+  getManagers,
+  getProcurementOfficers
 } = require('./manager.controller');
 const {
   protect,
@@ -10,9 +12,12 @@ const {
 
 const router = express.Router();
 
-router.use(protect, authorize('admin'));
+// Admin-only routes (create/delete managers)
+router.get('/', protect, authorize('admin'), getManagers);
+router.post('/', protect, authorize('admin'), createManager);
+router.delete('/:user_id', protect, authorize('admin'), deleteManager);
 
-router.post('/', createManager);
-router.delete('/:user_id', deleteManager);
+// Manager + Admin can list procurement officers
+router.get('/procurement-officers', protect, authorize('admin', 'manager'), getProcurementOfficers);
 
 module.exports = router;

@@ -252,7 +252,49 @@ const deleteManager = async (req, res) => {
   }
 };
 
+// @desc    Get all managers
+// @route   GET /api/admin/manager/
+// @access  Admin
+const getManagers = async (req, res) => {
+  try {
+    const managers = await prisma.user.findMany({
+      where: { role: 'manager' },
+      orderBy: { created_at: 'desc' }
+    });
+    return res.json({
+      message: 'Managers retrieved successfully',
+      count: managers.length,
+      data: managers.map(formatManager)
+    });
+  } catch (error) {
+    console.error('Get managers error:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get all procurement officers
+// @route   GET /api/admin/manager/procurement-officers
+// @access  Admin, Manager
+const getProcurementOfficers = async (req, res) => {
+  try {
+    const officers = await prisma.user.findMany({
+      where: { role: 'procurement' },
+      orderBy: { created_at: 'desc' }
+    });
+    return res.json({
+      message: 'Procurement officers retrieved successfully',
+      count: officers.length,
+      data: officers.map(formatManager)
+    });
+  } catch (error) {
+    console.error('Get procurement officers error:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   createManager,
-  deleteManager
+  deleteManager,
+  getManagers,
+  getProcurementOfficers
 };
