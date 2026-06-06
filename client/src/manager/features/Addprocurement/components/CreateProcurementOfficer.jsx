@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Mail, Phone, MapPin, Search, ChevronRight, ChevronLeft, User, Camera, Globe, FileText, Building2, FileCheck, Lock, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { addProcurementOfficer } from '../services/procurementService';
 
 const CreateProcurementOfficer = () => {
   const navigate = useNavigate();
@@ -41,11 +41,6 @@ const CreateProcurementOfficer = () => {
     }
   };
 
-  const createManagerRequest = async (data) => {
-    const response = await axios.post('http://localhost:8000/api/admin/manager', data);
-    return response.data;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -54,23 +49,26 @@ const CreateProcurementOfficer = () => {
       return;
     }
 
+    const username = `${formData.firstName.toLowerCase()}${formData.lastName.toLowerCase()}${Math.floor(Math.random() * 1000)}`;
+
     const submissionData = {
+      username: username,
       first_name: formData.firstName,
       last_name: formData.lastName,
       email: formData.email,
       password: 'Officer@123', // Default password 
-      role: 'manager',
       phone_no: formData.phone,
       country: formData.country,
+      bio: '', 
       avatar: photoPreview 
     };
     
     toast.promise(
-      createManagerRequest(submissionData),
+      addProcurementOfficer(submissionData),
       {
         loading: 'Creating officer account...',
         success: 'Officer created successfully!',
-        error: (err) => err.response?.data?.message || err.message || 'Creation failed',
+        error: (err) => err.message || 'Creation failed',
       }
     ).then(() => {
       setFormData({
