@@ -34,7 +34,11 @@ const protect = async (req, res, next) => {
 // Grant access to specific roles
 const authorize = (...roles) => {
   return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    // Convert roles to lowercase for case-insensitive comparison
+    const lowerCaseRoles = roles.map(role => role.toLowerCase());
+    const userRole = req.user && req.user.role ? req.user.role.toLowerCase() : '';
+
+    if (!req.user || !lowerCaseRoles.includes(userRole)) {
       return res.status(403).json({ 
         message: `User role '${req.user ? req.user.role : 'Unknown'}' is not authorized to access this route` 
       });
