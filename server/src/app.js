@@ -4,6 +4,8 @@ const cors = require('cors');
 const authRoutes = require('./shared/auth/auth.routes');
 const addProcurementRoutes = require('./procurement/features/addprocurement/addprocurement.routes');
 const addRfqRoutes = require('./procurement/features/rfqmanagemant/addrfq.routes');
+const managerRoutes = require('./admin/features/manager/manager.routes');
+const vendorRoutes = require('./admin/features/managevendor/managevendor.routes');
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/procurement', addProcurementRoutes);
 app.use('/api/procurement/rfq', addRfqRoutes);
+app.use('/api/admin/manager', managerRoutes);
+app.use('/api/admin/vendor', vendorRoutes);
 
 // Base route for health check
 app.get('/', (req, res) => {

@@ -4,6 +4,11 @@ import { AuthProvider } from './shared/context/AuthContext';
 import Login from './shared/auth/Login';
 import Loader from './shared/components/Loader';
 
+// Component Imports
+import Vendorsignup from './vendor/features/Vendorsignup/components/Vendorsignup';
+import Addprocurement from './manager/features/Addprocurement/components/procurement';
+import CreateProcurementOfficer from './manager/features/Addprocurement/components/CreateProcurementOfficer';
+
 // Lazy loading the layouts to improve initial load time
 const AdminLayout = React.lazy(() => import('./admin/layouts/AdminLayout'));
 const VendorLayout = React.lazy(() => import('./vendor/layouts/VendorLayout'));
@@ -22,10 +27,13 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={<Loader />}>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Vendorsignup />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-            
+
+            {/* Manager Routes */}
+            <Route path="/manager/officers" element={<Addprocurement />} />
+            <Route path="/manager/officers/create" element={<CreateProcurementOfficer />} />
+
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
@@ -40,7 +48,7 @@ function App() {
             <Route path="/procurement" element={<ProcurementLayout />}>
               <Route index element={<ProcurementDashboard />} />
             </Route>
-            
+
           </Routes>
         </Suspense>
       </BrowserRouter>
