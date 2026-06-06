@@ -33,14 +33,18 @@ const loginUser = async (req, res) => {
         data: { last_login: new Date() }
       });
 
-      res.json({
+      const userPayload = {
         user_id: user.user_id,
         username: user.username,
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
         role: user.role,
-        token: generateToken(user.user_id)
+      };
+
+      res.json({
+        ...userPayload,
+        token: generateToken(userPayload)
       });
     } else {
       res.status(401).json({ message: 'Invalid username or password' });
