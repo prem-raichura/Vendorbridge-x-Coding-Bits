@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../api/axiosInstance';
+import './Login.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -30,27 +31,53 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px', margin: '100px auto' }}>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input 
-          type="text" 
-          placeholder="Username" 
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)} 
-          required 
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <main className="login-page">
+      <section className="login-shell">
+        <div className="login-card">
+          <Link className="login-brand" to="/">
+            <span className="login-brand-mark">VB</span>
+            <span className="login-brand-name">VendorBridge</span>
+          </Link>
+
+          <div className="login-card-top">
+            <p className="login-eyebrow">Welcome back</p>
+            <h2>Login</h2>
+            <p className="login-subtitle">Enter your username and password to continue.</p>
+          </div>
+
+          {error && <p className="login-error">{error}</p>}
+
+          <form onSubmit={handleLogin} className="login-form">
+            <label>
+              <span>Username</span>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </label>
+
+            <label>
+              <span>Password</span>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+
+            <button type="submit" className="login-button">Login</button>
+            <Link className="login-link-button" to="/register-vendor">
+              Register as Vendor
+            </Link>
+          </form>
+        </div>
+      </section>
+    </main>
   );
 };
 
