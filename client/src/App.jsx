@@ -27,7 +27,9 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={<Loader />}>
           <Routes>
-            <Route path="/" element={<Vendorsignup />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Vendorsignup />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* Manager Routes */}
