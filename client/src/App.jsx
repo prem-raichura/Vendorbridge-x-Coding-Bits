@@ -28,7 +28,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register-vendor" element={<Vendorsignup />} />
+            <Route path="/signup" element={<Vendorsignup />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* Manager Routes */}
