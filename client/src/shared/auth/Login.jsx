@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
 import api from '../api/axiosInstance';
 import './Login.css';
@@ -18,12 +19,16 @@ const Login = () => {
       const { token, role } = response.data;
       
       login(token, role);
+      setError(null);
+      toast.success('Login successful');
 
       // Redirect based on role
-      if (role.toLowerCase() === 'admin') navigate('/admin');
-      else if (role.toLowerCase() === 'vendor') navigate('/vendor');
-      else if (role.toLowerCase() === 'procurement') navigate('/procurement');
-      else navigate('/');
+      window.setTimeout(() => {
+        if (role.toLowerCase() === 'admin') navigate('/admin');
+        else if (role.toLowerCase() === 'vendor') navigate('/vendor');
+        else if (role.toLowerCase() === 'procurement') navigate('/procurement');
+        else navigate('/');
+      }, 400);
 
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
@@ -33,12 +38,16 @@ const Login = () => {
   return (
     <main className="login-page">
       <section className="login-shell">
-        <div className="login-card">
+        <div className="login-brand-panel">
           <Link className="login-brand" to="/">
             <span className="login-brand-mark">VB</span>
             <span className="login-brand-name">VendorBridge</span>
           </Link>
 
+          <h1>Sign in to continue the procurement flow.</h1>
+        </div>
+
+        <div className="login-card">
           <div className="login-card-top">
             <p className="login-eyebrow">Welcome back</p>
             <h2>Login</h2>
