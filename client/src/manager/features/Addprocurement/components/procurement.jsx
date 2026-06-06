@@ -65,7 +65,7 @@ export const Addprocurement = () => {
             </div>
             <div className={`transition-opacity duration-300 ml-4 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
               <h2 className="text-lg font-bold tracking-tight text-primary-blue leading-tight">VendorBridge</h2>
-              <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">ERP System</p>
+              <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">Manager Panel</p>
             </div>
             <button onClick={() => setMobileMenuOpen(false)} className="lg:hidden text-gray-400 hover:text-primary-blue absolute right-4">
               <X size={24} />
@@ -73,39 +73,40 @@ export const Addprocurement = () => {
           </div>
 
           <nav className="p-4 space-y-1.5 text-sm font-medium">
+            <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap">
+              <LayoutDashboard size={20} className="flex-shrink-0 ml-0.5" />
+              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Dashboard</span>
+            </a>
+
+            {/* Procurement Officers - Expanded (Active) */}
             <div className="bg-primary-blue text-white rounded-xl shadow-md whitespace-nowrap overflow-hidden">
-              <a href="#" className="flex items-center justify-between px-3 py-3">
+              <div className="flex items-center justify-between px-3 py-3 cursor-pointer">
                 <div className="flex items-center space-x-4">
-                  <LayoutDashboard size={20} className="flex-shrink-0 ml-0.5" />
-                  <span className={`transition-opacity duration-300 font-semibold ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Dashboard</span>
+                  <Users size={20} className="flex-shrink-0 ml-0.5" />
+                  <span className={`transition-opacity duration-300 font-semibold ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Procurement Officers</span>
                 </div>
                 <ChevronDown size={16} className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`} />
-              </a>
+              </div>
               <div className={`pb-3 pl-12 space-y-3 text-xs font-semibold transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
-                <a href="#" className="flex items-center space-x-3 text-blue-100 hover:text-white transition-colors">
+                <button onClick={() => navigate('/manager/officers')} className="flex items-center space-x-3 text-white transition-colors w-full text-left">
                   <div className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0"></div>
-                  <span>Overview</span>
-                </a>
-                <button onClick={() => navigate('/manager/officers')} className="flex items-center space-x-3 text-blue-200 hover:text-white transition-colors">
+                  <span>All Officers</span>
+                </button>
+                <button onClick={() => navigate('/manager/officers/create')} className="flex items-center space-x-3 text-blue-100 hover:text-white transition-colors w-full text-left">
                   <div className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0"></div>
-                  <span>Procurement Officers</span>
+                  <span>Add Officer</span>
                 </button>
               </div>
             </div>
-
-            <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap">
-              <Building2 size={20} className="flex-shrink-0 ml-0.5" />
-              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>College Management</span>
-            </a>
             
             <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap">
-              <Users size={20} className="flex-shrink-0 ml-0.5" />
-              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Faculty & Staff</span>
+              <CheckCircle2 size={20} className="flex-shrink-0 ml-0.5" />
+              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Approval Requests</span>
             </a>
 
             <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap">
-              <FileCheck size={20} className="flex-shrink-0 ml-0.5" />
-              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Student Management</span>
+              <Activity size={20} className="flex-shrink-0 ml-0.5" />
+              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Workflow Monitoring</span>
             </a>
             
             <a href="#" className="flex items-center justify-between px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap overflow-hidden">
@@ -113,12 +114,17 @@ export const Addprocurement = () => {
                 <Bell size={20} className="flex-shrink-0 ml-0.5" />
                 <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Notifications</span>
               </div>
-              <span className={`bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100 block' : 'opacity-0 hidden'}`}>3</span>
+              <span className={`bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100 block' : 'opacity-0 hidden'}`}>5</span>
+            </a>
+
+            <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap">
+              <FileText size={20} className="flex-shrink-0 ml-0.5" />
+              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Reports</span>
             </a>
 
             <a href="#" className="flex items-center space-x-4 px-3 py-3 rounded-xl text-text-muted hover:bg-gray-50 hover:text-primary-blue transition-colors whitespace-nowrap">
               <Settings size={20} className="flex-shrink-0 ml-0.5" />
-              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Settings</span>
+              <span className={`transition-opacity duration-300 ${isSidebarExpanded || mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}>Profile Settings</span>
             </a>
           </nav>
         </div>

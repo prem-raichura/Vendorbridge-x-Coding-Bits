@@ -8,6 +8,7 @@ import Loader from './shared/components/Loader';
 import Vendorsignup from './vendor/features/Vendorsignup/components/Vendorsignup';
 import Addprocurement from './manager/features/Addprocurement/components/procurement';
 import CreateProcurementOfficer from './manager/features/Addprocurement/components/CreateProcurementOfficer';
+import CreateRFQ from './procurement/features/CreateRFQ/components/CreateRFQ';
 
 // Lazy loading the layouts to improve initial load time
 const AdminLayout = React.lazy(() => import('./admin/layouts/AdminLayout'));
@@ -48,6 +49,7 @@ function App() {
             </Route>
 
             {/* Procurement Routes */}
+            <Route path="/procurement/rfq/create" element={<CreateRFQ />} />
             <Route path="/procurement" element={<ProcurementLayout />}>
               <Route index element={<ProcurementDashboard />} />
             </Route>

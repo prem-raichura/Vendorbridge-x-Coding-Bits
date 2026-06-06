@@ -25,6 +25,7 @@ const Login = () => {
       // Redirect based on role
       window.setTimeout(() => {
         if (role.toLowerCase() === 'admin') navigate('/admin');
+        else if (role.toLowerCase() === 'manager') navigate('/manager/officers');
         else if (role.toLowerCase() === 'vendor') navigate('/vendor');
         else if (role.toLowerCase() === 'procurement') navigate('/procurement');
         else navigate('/');
