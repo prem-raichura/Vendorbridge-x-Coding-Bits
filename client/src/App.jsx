@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './shared/context/AuthContext';
 import LandingPage from './shared/pages/LandingPage';
 import Login from './shared/auth/Login';
@@ -24,6 +25,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Toaster position="top-right" />
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
