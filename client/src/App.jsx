@@ -1,10 +1,9 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './shared/context/AuthContext';
+import LandingPage from './shared/pages/LandingPage';
 import Login from './shared/auth/Login';
 import Loader from './shared/components/Loader';
-
-// Component Imports
 import Vendorsignup from './vendor/features/Vendorsignup/components/Vendorsignup';
 import Addprocurement from './manager/features/Addprocurement/components/procurement';
 import CreateProcurementOfficer from './manager/features/Addprocurement/components/CreateProcurementOfficer';
@@ -27,7 +26,9 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={<Loader />}>
           <Routes>
-            <Route path="/" element={<Vendorsignup />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register-vendor" element={<Vendorsignup />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* Manager Routes */}
