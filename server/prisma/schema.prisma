@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id       Int             @id @default(autoincrement())
+  first_name    String?
+  last_name     String?
+  phone_no      String?         // Stored as String to prevent integer overflow for large numbers
+  country       String?
+  avatar        Json?
+  password      String
+  email         String          @unique
+  bio           String?
+  created_at    DateTime        @default(now())
+  last_login    DateTime?
+  role          String?
+  username      String?         @unique
+
+  rfqs          Rfq[]
+  vendorDetails VendorDetails[]
+  approvals     Approval[]
+  purchaseOrders PurchaseOrder[]
+  activities    Activity[]
+}
+
+model Rfq {
+  rfq_id          Int         @id @default(autoincrement())
+  user_id         Int
+  rfq_title       String?
+  rfq_category    String?
+  rfq_deadline    DateTime?
+  rfq_description String?
+  attachment      Json?
+  items           Json?
+  assign_vendors  Json?
+  rfq_status      String?
+  flag            Boolean?
+  created_at      DateTime    @default(now())
+
+  user            User        @relation(fields: [user_id], references: [user_id])
+  quotations      Quotation[]
+}
+
+model Quotation {
+  q_id             Int         @id @default(autoincrement())
+  rfq_id           Int
+  vendor_id        Int
+  item             Json?
+  gst_tax          Int?
+  discount         Int?
+  note             String?
+  sub_amount       Float?
+  total_amount     Float?
+  flag             Boolean?
+  payment_terms    DateTime?
+  submitted_at     DateTime    @default(now())
+  updated_at       DateTime    @updatedAt
+  delivery_date    DateTime?
+  quotation_status Boolean?
+
+  rfq              Rfq         @relation(fields: [rfq_id], references: [rfq_id])
+  vendor           VendorDetails @relation(fields: [vendor_id], references: [vendor_id])
+  approvals        Approval[]
+  purchaseOrders   PurchaseOrder[]
+}
+
+model VendorDetails {
+  vendor_id         Int         @id @default(autoincrement())
+  user_id           Int
+  organisation_name String?
+  gst_id            String?
+  address           String?
+  status            String?
+
+  user              User        @relation(fields: [user_id], references: [user_id])
+  quotations        Quotation[]
+}
+
+model Approval {
+  app_id       Int      @id @default(autoincrement())
+  user_id      Int
+  q_id         Int
+  approve_date DateTime @default(now())
+
+  user         User     @relation(fields: [user_id], references: [user_id])
+  quotation    Quotation @relation(fields: [q_id], references: [q_id])
+}
+
+model PurchaseOrder {
+  po_id      Int      @id @default(autoincrement())
+  q_id       Int
+  user_id    Int
+  created_at DateTime @default(now())
+  po_num     String?
+  po_status  Boolean?
+
+  quotation  Quotation @relation(fields: [q_id], references: [q_id])
+  user       User      @relation(fields: [user_id], references: [user_id])
+  invoices   Invoice[]
+}
+
+model Invoice {
+  inv_id       Int      @id @default(autoincrement())
+  po_id        Int
+  inv_no       String?
+  generated_at DateTime @default(now())
+
+  purchaseOrder PurchaseOrder @relation(fields: [po_id], references: [po_id])
+}
+
+model Activity {
+  log_id     Int      @id @default(autoincrement())
+  user_id    Int
+  action     String?
+  created_at DateTime @default(now())
+
+  user       User     @relation(fields: [user_id], references: [user_id])
+}
